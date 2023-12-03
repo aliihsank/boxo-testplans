@@ -26,7 +26,7 @@ count     = "1000"
     cpu = "1000m"
 
 [[groups]]
-  id = "requestors"
+  id = "requesters"
   instances = { count = 4 }
   [groups.resources]
     memory = "4096Mi"

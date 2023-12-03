@@ -1,10 +1,10 @@
 [metadata]
-        name = "bitswap-local-speed-test"
+        name = "boxo-performance-test"
 
 [global]
-        plan = "bitswap"
-        case = "speed-test"
-        total_instances = 3
+        plan = "boxo"
+        case = "performance-test"
+        total_instances = 4
         builder = "docker:go"
         runner = "local:docker"
 
@@ -14,11 +14,11 @@
 [global.run.test_params]
         size      = "1MB"
         block_count     = "1000"
-	provider_count	= "2"
+	provider_count	= "3"
 
 [[groups]]
         id = "providers"
-        instances = { count = 2 }
+        instances = { count = 3 }
         [groups.resources]
                 memory = "4096Mi"
                 cpu = "1000m"

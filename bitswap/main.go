@@ -94,8 +94,8 @@ func runSpeedTest(runenv *runtime.RunEnv, initCtx *run.InitContext) error {
 	case "providers":
 		runenv.RecordMessage("running provider")
 		err = runProvide(ctx, runenv, h, bstore, ex, initCtx)
-	case "requestors":
-		runenv.RecordMessage("running requestor")
+	case "requesters":
+		runenv.RecordMessage("running requester")
 		err = runRequest(ctx, runenv, h, bstore, ex, initCtx)
 	default:
 		runenv.RecordMessage("not part of a group")
