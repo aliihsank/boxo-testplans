@@ -1,5 +1,22 @@
 package main
 
+import (
+	"context"
+	"fmt"
+	"time"
+	
+	"github.com/testground/sdk-go/run"
+	"github.com/testground/sdk-go/runtime"
+	
+	"github.com/libp2p/go-libp2p/core/host"
+	"github.com/libp2p/go-libp2p/core/peer"
+	"github.com/multiformats/go-multihash"
+	"github.com/ipfs/go-cid"
+	
+	bstats "github.com/ipfs/go-ipfs-regression/bitswap"
+	blockstore "github.com/ipfs/go-ipfs-blockstore"
+	exchange "github.com/ipfs/go-ipfs-exchange-interface"
+)
 
 func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore blockstore.Blockstore, ex exchange.Interface, initCtx *run.InitContext) error {
 	client := initCtx.SyncClient

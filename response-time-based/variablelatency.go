@@ -1,5 +1,23 @@
 package main
 
+import (
+	"context"
+	"fmt"
+	"errors"
+	
+	"github.com/testground/sdk-go/network"
+	"github.com/testground/sdk-go/run"
+	"github.com/testground/sdk-go/runtime"
+	"github.com/multiformats/go-multiaddr"
+	"github.com/libp2p/go-libp2p"
+	
+	dht "github.com/libp2p/go-libp2p-kad-dht"
+	datastore "github.com/ipfs/go-datastore"
+	blockstore "github.com/ipfs/go-ipfs-blockstore"
+	bitswap "github.com/ipfs/boxo/bitswap"
+	bsnet "github.com/ipfs/boxo/bitswap/network"
+)
+
 func runVariableLatency(runenv *runtime.RunEnv, initCtx *run.InitContext) error {
 	runenv.RecordMessage("running speed-test")
 	ctx := context.Background()
