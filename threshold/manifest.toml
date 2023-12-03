@@ -1,0 +1,17 @@
+name = "bitswap"
+
+[builders."docker:go"]
+        enabled = true
+        go_version = "1.19"
+        build_base_image       = "golang:1.19-buster"
+
+[runners."local:docker"]
+        enabled = true
+
+[[testcases]]
+        name= "speed-test"
+        instances = { min = 2, max = 100, default = 2 }
+
+        [testcases.params]
+        size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
+        count = { type = "int", desc = "number of transfers", default = "10" }
