@@ -2,8 +2,8 @@ name = "boxo"
 
 [builders."docker:go"]
         enabled = true
-        go_version = "1.19"
-        build_base_image       = "golang:1.19-buster"
+        go_version = "1.21"
+        build_base_image       = "golang:1.21-alpine"
 
 [runners."local:docker"]
         enabled = true
