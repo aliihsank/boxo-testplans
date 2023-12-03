@@ -2,7 +2,7 @@
         name = "boxo-performance-test"
 
 [global]
-        plan = "boxo"
+        plan = "response-time-based"
         case = "performance-test"
         total_instances = 4
         builder = "docker:go"
