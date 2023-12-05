@@ -22,7 +22,7 @@ func runEarlyProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, b
 		Addrs: h.Addrs(),
 	}
 	client.MustPublish(ctx, providerTopic, &ai)
-	_ = client.MustSignalAndWait(ctx, readyEarlyProviderState, runenv.TestInstanceCount)
+	_ = client.MustSignalAndWait(ctx, earlyProviderReadyState, runenv.TestInstanceCount)
 
 	size := runenv.SizeParam("size")
 	count := runenv.IntParam("count")

@@ -19,7 +19,7 @@ import (
 )
 
 func runVariableLatency(runenv *runtime.RunEnv, initCtx *run.InitContext) error {
-	runenv.RecordMessage("running speed-test")
+	runenv.RecordMessage("Running Case: runVariableLatency")
 	ctx := context.Background()
 
 	netclient := initCtx.NetClient
@@ -46,6 +46,9 @@ func runVariableLatency(runenv *runtime.RunEnv, initCtx *run.InitContext) error 
 		CallbackTarget: runenv.TestGroupInstanceCount,
 		RoutingPolicy:  network.AllowAll,
 	})
+	
+	fmt.Println("Configured Network")
+
 	listen, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/3333", netclient.MustGetDataNetworkIP().String()))
 	if err != nil {
 		return err

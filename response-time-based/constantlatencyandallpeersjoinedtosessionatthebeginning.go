@@ -19,7 +19,7 @@ import (
 )
 
 func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.RunEnv, initCtx *run.InitContext) error {
-	runenv.RecordMessage("running speed-test")
+	runenv.RecordMessage("Running Case: runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning")
 	ctx := context.Background()
 
 	netclient := initCtx.NetClient
@@ -46,37 +46,46 @@ func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.
 		CallbackTarget: runenv.TestGroupInstanceCount,
 		RoutingPolicy:  network.AllowAll,
 	})
+
+	fmt.Println("Configured Network")
+
 	listen, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/3333", netclient.MustGetDataNetworkIP().String()))
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("Listen: ", listen)
+
 	h, err := libp2p.New(libp2p.ListenAddrs(listen))
 	if err != nil {
 		return err
 	}
+	
+	fmt.Println("Libp2p Host: ", h)
+
 	defer h.Close()
 	kad, err := dht.New(ctx, h)
 	if err != nil {
 		return err
 	}
 	for _, a := range h.Addrs() {
-		runenv.RecordMessage("listening on addr: %s", a.String())
+		runenv.RecordMessage("Listening on Addr: %s", a.String())
 	}
 	bstore := blockstore.NewBlockstore(datastore.NewMapDatastore())
 	ex := bitswap.New(ctx, bsnet.NewFromIpfsHost(h, kad), bstore)
 	switch runenv.TestGroupID {
-	case "early_providers":
-		runenv.RecordMessage("running early_providers")
+	case "early_provider":
+		runenv.RecordMessage("Running new early_provider")
 		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx)
-	case "late_providers":
-		runenv.RecordMessage("running late_providers")
+	case "late_provider":
+		runenv.RecordMessage("Running new late_provider")
 		err = runLateProvide(ctx, runenv, h, bstore, ex, initCtx)
-	case "requesters":
-		runenv.RecordMessage("running requester")
+	case "requester":
+		runenv.RecordMessage("Running new requester")
 		err = runRequest(ctx, runenv, h, bstore, ex, initCtx)
 	default:
-		runenv.RecordMessage("not part of a group")
-		err = errors.New("unknown test group id")
+		runenv.RecordMessage("Not part of a group: ", runenv.TestGroupID)
+		err = errors.New("Unknown test group id")
 	}
 	return err
 }

@@ -29,7 +29,7 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	}
 	ai := <-providers
 
-	runenv.RecordMessage("connecting  to provider provider: %s", fmt.Sprint(*ai))
+	runenv.RecordMessage("connecting  to provider: %s", fmt.Sprint(*ai))
 	providerSub.Done()
 
 	err = h.Connect(ctx, *ai)
@@ -40,7 +40,7 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	runenv.RecordMessage("connected to provider")
 
 	// tell the provider that we're ready for it to publish blocks
-	_ = client.MustSignalAndWait(ctx, readyEarlyProviderState, runenv.TestInstanceCount)
+	_ = client.MustSignalAndWait(ctx, earlyProviderReadyState, runenv.TestInstanceCount)
 	// wait until the provider is ready for us to start downloading
 	_ = client.MustSignalAndWait(ctx, readyDLState, runenv.TestInstanceCount)
 

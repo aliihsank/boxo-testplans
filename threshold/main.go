@@ -33,8 +33,8 @@ var (
 		"speed-test": run.InitializedTestCaseFn(runSpeedTest),
 	}
 	networkState  = sync.State("network-configured")
-	readyEarlyProviderState    = sync.State("early-provider-ready-to-publish")
-	readyLateProviderState    = sync.State("late-provider-ready-to-publish")
+	earlyProviderReadyState    = sync.State("early-provider-ready-to-publish")
+	lateProviderReadyState    = sync.State("late-provider-ready-to-publish")
 	readyDLState  = sync.State("ready-to-download")
 	doneState     = sync.State("done")
 	providerTopic = sync.NewTopic("provider", &peer.AddrInfo{})
@@ -116,7 +116,7 @@ func runEarlyProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, b
 		Addrs: h.Addrs(),
 	}
 	client.MustPublish(ctx, providerTopic, &ai)
-	_ = client.MustSignalAndWait(ctx, readyEarlyProviderState, runenv.TestInstanceCount)
+	_ = client.MustSignalAndWait(ctx, earlyProviderReadyState, runenv.TestInstanceCount)
 
 	size := runenv.SizeParam("size")
 	count := runenv.IntParam("count")
@@ -146,7 +146,7 @@ func runLateProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bs
 		Addrs: h.Addrs(),
 	}
 	client.MustPublish(ctx, providerTopic, &ai)
-	_ = client.MustSignalAndWait(ctx, readyLateProviderState, runenv.TestInstanceCount)
+	_ = client.MustSignalAndWait(ctx, lateProviderReadyState, runenv.TestInstanceCount)
 
 	size := runenv.SizeParam("size")
 	count := runenv.IntParam("count")
@@ -190,7 +190,7 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	runenv.RecordMessage("connected to provider")
 
 	// tell the provider that we're ready for it to publish blocks
-	_ = client.MustSignalAndWait(ctx, readyEarlyProviderState, runenv.TestInstanceCount)
+	_ = client.MustSignalAndWait(ctx, earlyProviderReadyState, runenv.TestInstanceCount)
 	// wait until the provider is ready for us to start downloading
 	_ = client.MustSignalAndWait(ctx, readyDLState, runenv.TestInstanceCount)
 

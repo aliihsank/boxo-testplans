@@ -1,4 +1,4 @@
-name = "boxo"
+name = "response-time-based"
 
 [builders."docker:go"]
         enabled = true
@@ -9,7 +9,23 @@ name = "boxo"
         enabled = true
 
 [[testcases]]
-        name= "performance-test"
+        name= "constant-latency_all-peers-joined-to-session-at-the-beginning"
+        instances = { min = 2, max = 100, default = 2 }
+
+        [testcases.params]
+        size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
+        count = { type = "int", desc = "number of transfers", default = "10" }
+
+[[testcases]]
+        name= "constant-latency_third-peer-joined-to-session-after-500-blocks"
+        instances = { min = 2, max = 100, default = 2 }
+
+        [testcases.params]
+        size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
+        count = { type = "int", desc = "number of transfers", default = "10" }
+
+[[testcases]]
+        name= "variable-latency"
         instances = { min = 2, max = 100, default = 2 }
 
         [testcases.params]
