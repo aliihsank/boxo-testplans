@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"errors"
+	"math/rand"
 	
 	"github.com/testground/sdk-go/network"
 	"github.com/testground/sdk-go/run"
@@ -67,16 +68,19 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 	}
 	bstore := blockstore.NewBlockstore(datastore.NewMapDatastore())
 	ex := bitswap.New(ctx, bsnet.NewFromIpfsHost(h, kad), bstore)
+	
+	r := rand.New(rand.NewSource(5))
+
 	switch runenv.TestGroupID {
 	case "early_providers":
 		runenv.RecordMessage("running early_providers")
-		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx)
+		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx, r)
 	case "late_providers":
 		runenv.RecordMessage("running late_providers")
 		err = runLateProvide(ctx, runenv, h, bstore, ex, initCtx)
 	case "requesters":
 		runenv.RecordMessage("running requester")
-		err = runRequest(ctx, runenv, h, bstore, ex, initCtx)
+		err = runRequest(ctx, runenv, h, bstore, ex, initCtx, r)
 	default:
 		runenv.RecordMessage("not part of a group")
 		err = errors.New("unknown test group id")

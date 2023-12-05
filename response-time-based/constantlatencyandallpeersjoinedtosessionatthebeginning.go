@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"errors"
+	"math/rand"
 	
 	"github.com/testground/sdk-go/network"
 	"github.com/testground/sdk-go/run"
@@ -53,16 +54,10 @@ func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("Listen: ", listen)
-
 	h, err := libp2p.New(libp2p.ListenAddrs(listen))
 	if err != nil {
 		return err
 	}
-	
-	fmt.Println("Libp2p Host: ", h)
-
 	defer h.Close()
 	kad, err := dht.New(ctx, h)
 	if err != nil {
@@ -73,16 +68,20 @@ func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.
 	}
 	bstore := blockstore.NewBlockstore(datastore.NewMapDatastore())
 	ex := bitswap.New(ctx, bsnet.NewFromIpfsHost(h, kad), bstore)
+
 	switch runenv.TestGroupID {
 	case "early_provider":
-		runenv.RecordMessage("Running new early_provider")
-		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx)
+		r := rand.New(rand.NewSource(5))
+		runenv.RecordMessage("Running new early_provider, Random Test: ", r.Uint64())
+		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx, r)
 	case "late_provider":
-		runenv.RecordMessage("Running new late_provider")
+		r := rand.New(rand.NewSource(5))
+		runenv.RecordMessage("Running new late_provider, Random Test: ", r.Uint64())
 		err = runLateProvide(ctx, runenv, h, bstore, ex, initCtx)
 	case "requester":
-		runenv.RecordMessage("Running new requester")
-		err = runRequest(ctx, runenv, h, bstore, ex, initCtx)
+		r := rand.New(rand.NewSource(5))
+		runenv.RecordMessage("Running new requester, Random Test: ", r.Uint64())
+		err = runRequest(ctx, runenv, h, bstore, ex, initCtx, r)
 	default:
 		runenv.RecordMessage("Not part of a group: ", runenv.TestGroupID)
 		err = errors.New("Unknown test group id")
