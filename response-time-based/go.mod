@@ -138,4 +138,4 @@ require (
 	nhooyr.io/websocket v1.8.6 // indirect
 )
 
-replace github.com/ipfs/boxo => github.com/aliihsank/boxo v0.0.0-20231205154438-524215e63dd9
+replace github.com/ipfs/boxo => github.com/aliihsank/boxo v0.0.0-20231210140551-a2b209eb7383

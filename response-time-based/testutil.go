@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 
 	block "github.com/ipfs/go-block-format"
@@ -14,7 +13,6 @@ func generateBlocksOfSize(n int, size uint64, r *rand.Rand) []block.Block {
 		buf := make([]byte, size)
 		r.Read(buf)
 		b := block.NewBlock(buf)
-		fmt.Println("Provider Generated Block: ", b)
 		generatedBlocks = append(generatedBlocks, b)
 	}
 	return generatedBlocks

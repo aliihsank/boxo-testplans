@@ -26,8 +26,6 @@ func runEarlyProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, b
 	size := runenv.SizeParam("size")
 	count := runenv.IntParam("count")
 
-	runenv.RecordMessage("Generating %d-sized random blocks", size)
-
 	rootBlock := generateBlocksOfSize(1, size, r)
 	blocks := generateBlocksOfSize(count, size, r)
 	blocks[0] = rootBlock[0]

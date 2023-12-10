@@ -33,16 +33,16 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	providerCount := runenv.IntParam("provider_count")
 	for i := 0; i <= providerCount - 1; i++ {
 		ai := <-providers
-		runenv.RecordMessage("connecting to provider provider[%d]: %s", i, fmt.Sprint(*ai))
+		runenv.RecordMessage("Connecting to provider provider[%d]: %s", i, fmt.Sprint(*ai))
 
 		err = h.Connect(ctx, *ai)
 		if err != nil {
-			return fmt.Errorf("could not connect to provider: %w", err)
+			return fmt.Errorf("Could not connect to provider: %w", err)
 		}
-		runenv.RecordMessage("requester connected to provider[%d]: %s", i, fmt.Sprint(*ai))
+		runenv.RecordMessage("Requester connected to provider[%d]: %s", i, fmt.Sprint(*ai))
 	}
 	
-	runenv.RecordMessage("connected to all providers")
+	runenv.RecordMessage("Connected to all providers")
 
 	// tell the provider that we're ready for it to publish blocks
 	_ = client.MustSignalAndWait(ctx, earlyProviderReadyState, runenv.TestInstanceCount)
@@ -58,7 +58,6 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 
 	for i := 0; i < count; i++ {
 		blkmhs[i] = blocks[i].Cid().Hash()
-		runenv.RecordMessage("[Block Cid: ", blocks[i].Cid(), "], [Hash: ", blocks[i].Cid().Hash(), "]")
 	}
 	
 	// wait until the provider is ready for us to start downloading
@@ -69,10 +68,12 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	begin := time.Now()
 	for i := 0; i < count; i++ {
 		mh := blkmhs[i]
-		runenv.RecordMessage("Downloading block %s", mh.String())
+		blockCid := cid.NewCidV0(mh)
+		runenv.RecordMessage("Requesting block %s", blockCid.String())
+
 		dlBegin := time.Now()
 
-		blk, err := session.GetBlock(ctx, cid.NewCidV0(mh))
+		blk, err := session.GetBlock(ctx, blockCid)
 		if err != nil {
 			return fmt.Errorf("Could not download get block %s: %w", mh.String(), err)
 		}

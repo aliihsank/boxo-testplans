@@ -13,7 +13,7 @@
 
 [global.run.test_params]
         size      = "1MB"
-        block_count     = "1000"
+        block_count     = "10"
 	provider_count	= "3"
 
 [[groups]]
