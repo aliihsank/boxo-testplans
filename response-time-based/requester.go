@@ -33,7 +33,7 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	providerCount := runenv.IntParam("provider_count")
 	for i := 0; i <= providerCount - 1; i++ {
 		ai := <-providers
-		runenv.RecordMessage("Connecting to provider provider[%d]: %s", i, fmt.Sprint(*ai))
+		runenv.RecordMessage("Connecting to provider[%d]: %s", i, fmt.Sprint(*ai))
 
 		err = h.Connect(ctx, *ai)
 		if err != nil {
@@ -69,15 +69,15 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 	for i := 0; i < count; i++ {
 		mh := blkmhs[i]
 		blockCid := cid.NewCidV0(mh)
-		runenv.RecordMessage("Requesting block %s", blockCid.String())
+		runenv.RecordMessage("Initiating block request for %s", blockCid.String())
 
 		dlBegin := time.Now()
 
 		blk, err := session.GetBlock(ctx, blockCid)
 		if err != nil {
-			return fmt.Errorf("Could not download get block %s: %w", mh.String(), err)
+			return fmt.Errorf("Could not download/get block %s: %w", mh.String(), err)
 		}
-		dlDuration := time.Since(dlBegin)
+		dlDuration := time.Since(dlBegin) / 1e6
 		s := &bstats.BitswapStat{
 			SingleDownloadSpeed: &bstats.SingleDownloadSpeed{
 				Cid:              blk.Cid().String(),
@@ -87,7 +87,7 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 		runenv.RecordMessage(bstats.Marshal(s))
 	}
 
-	duration := time.Since(begin)
+	duration := time.Since(begin) / 1e6
 	s := &bstats.BitswapStat{
 		MultipleDownloadSpeed: &bstats.MultipleDownloadSpeed{
 			BlockCount:    count,

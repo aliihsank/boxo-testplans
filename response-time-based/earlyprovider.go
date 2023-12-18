@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"context"
 	"math/rand"
 	
@@ -37,6 +38,8 @@ func runEarlyProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, b
 	for i := 0; i < count; i++ {
 		runenv.RecordMessage("Published block #%s", blocks[i].Cid())
 	}
+
+	time.Sleep(3 * time.Second)
 
 	_ = client.MustSignalAndWait(ctx, readyDLState, runenv.TestInstanceCount)
 	_ = client.MustSignalAndWait(ctx, doneState, runenv.TestInstanceCount)
