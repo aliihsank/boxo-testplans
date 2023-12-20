@@ -3,7 +3,7 @@
 
 [global]
         plan = "response-time-based"
-        case = "variable-latency"
+        case = "variable-latency" // 3rd peer's latency increases to 90ms
         total_instances = 4
         builder = "docker:go"
         runner = "local:docker"
@@ -13,18 +13,18 @@
 
 [global.run.test_params]
         size      = "1MB"
-        block_count     = "1000"
+        block_count     = "100"
 	provider_count	= "3"
 
 [[groups]]
-        id = "providers"
+        id = "early_provider"
         instances = { count = 3 }
         [groups.resources]
                 memory = "4096Mi"
                 cpu = "1000m"
 
 [[groups]]
-        id = "requesters"
+        id = "requester"
         instances = { count = 1 }
         [groups.resources]
                 memory = "4096Mi"

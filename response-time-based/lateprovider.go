@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"context"
 	"math/rand"
 	
@@ -9,12 +10,11 @@ import (
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/peer"
 	
-	block "github.com/ipfs/go-block-format"
 	exchange "github.com/ipfs/go-ipfs-exchange-interface"
 	blockstore "github.com/ipfs/go-ipfs-blockstore"
 )
 
-func runLateProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore blockstore.Blockstore, ex exchange.Interface, initCtx *run.InitContext) error {
+func runLateProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore blockstore.Blockstore, ex exchange.Interface, initCtx *run.InitContext, r *rand.Rand) error {
 	client := initCtx.SyncClient
 
 	ai := peer.AddrInfo{
@@ -26,19 +26,21 @@ func runLateProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bs
 
 	size := runenv.SizeParam("size")
 	count := runenv.IntParam("count")
-	for i := 0; i <= count; i++ {
-		runenv.RecordMessage("generating %d-sized random block", size)
-		buf := make([]byte, size)
-		rand.Read(buf)
-		blk := block.NewBlock(buf)
-		err := bstore.Put(ctx, blk)
-		if err != nil {
-			return err
-		}
-		mh := blk.Multihash()
-		runenv.RecordMessage("publishing block %s", mh.String())
-		client.MustPublish(ctx, blockTopic, &mh)
+	
+	rootBlock := generateBlocksOfSize(1, size, r)
+	blocks := generateBlocksOfSize(count, size, r)
+	blocks[0] = rootBlock[0]
+
+	if err := bstore.PutMany(ctx, blocks); err != nil {
+		return err
 	}
+
+	for i := 0; i < count; i++ {
+		runenv.RecordMessage("Published block #%s", blocks[i].Cid())
+	}
+
+	time.Sleep(1 * time.Second)
+
 	_ = client.MustSignalAndWait(ctx, readyDLState, runenv.TestInstanceCount)
 	_ = client.MustSignalAndWait(ctx, doneState, runenv.TestInstanceCount)
 	return nil

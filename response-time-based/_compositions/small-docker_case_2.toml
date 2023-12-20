@@ -13,18 +13,25 @@
 
 [global.run.test_params]
         size      = "1MB"
-        block_count     = "1000"
+        block_count     = "100"
 	provider_count	= "3"
 
 [[groups]]
-        id = "providers"
-        instances = { count = 3 }
+        id = "early_provider"
+        instances = { count = 2 }
         [groups.resources]
                 memory = "4096Mi"
                 cpu = "1000m"
 
 [[groups]]
-        id = "requesters"
+        id = "late_provider"
+        instances = { count = 1 }
+        [groups.resources]
+                memory = "4096Mi"
+                cpu = "1000m"
+
+[[groups]]
+        id = "requester"
         instances = { count = 1 }
         [groups.resources]
                 memory = "4096Mi"

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"errors"
 	"math/rand"
+	"time"
 	
 	"github.com/testground/sdk-go/network"
 	"github.com/testground/sdk-go/run"
@@ -24,21 +25,61 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 	ctx := context.Background()
 
 	netclient := initCtx.NetClient
+	groupSeq := initCtx.GroupSeq
+
+	runenv.RecordMessage("Group Seq: ", groupSeq)
 
 	linkShape := network.LinkShape{}
-	// linkShape := network.LinkShape{
-	// 	Latency:   50 * time.Millisecond,
-	// 	Jitter:    20 * time.Millisecond,
-	// 	Bandwidth: 3e6,
-	// 	// Filter: (not implemented)
-	// 	Loss:          0.02,
-	// 	Corrupt:       0.01,
-	// 	CorruptCorr:   0.1,
-	// 	Reorder:       0.01,
-	// 	ReorderCorr:   0.1,
-	// 	Duplicate:     0.02,
-	// 	DuplicateCorr: 0.1,
-	// }
+
+	if(runenv.TestGroupID == "early_provider"){
+		switch groupSeq {
+		case 1:
+			linkShape = network.LinkShape{
+				Latency:   20 * time.Millisecond,
+				Jitter:    20 * time.Millisecond,
+				Bandwidth: 3e6,
+				// Filter: (not implemented)
+				Loss:          0.02, // Bu değerin farklı variantlarıyla test yapılacak
+				Corrupt:       0.01,
+				CorruptCorr:   0.1,
+				Reorder:       0.01,
+				ReorderCorr:   0.1,
+				Duplicate:     0.02,
+				DuplicateCorr: 0.1,
+			}
+		case 2:
+			linkShape = network.LinkShape{
+				Latency:   60 * time.Millisecond,
+				Jitter:    20 * time.Millisecond,
+				Bandwidth: 3e6,
+				// Filter: (not implemented)
+				Loss:          0.02,
+				Corrupt:       0.01,
+				CorruptCorr:   0.1,
+				Reorder:       0.01,
+				ReorderCorr:   0.1,
+				Duplicate:     0.02,
+				DuplicateCorr: 0.1,
+			}
+		case 3:
+			linkShape = network.LinkShape{
+				Latency:   10 * time.Millisecond,
+				Jitter:    20 * time.Millisecond,
+				Bandwidth: 3e6,
+				// Filter: (not implemented)
+				Loss:          0.02,
+				Corrupt:       0.01,
+				CorruptCorr:   0.1,
+				Reorder:       0.01,
+				ReorderCorr:   0.1,
+				Duplicate:     0.02,
+				DuplicateCorr: 0.1,
+			}
+		default:
+			fmt.Println("There is something wrong with seq number.")
+		}
+	}
+
 	netclient.MustConfigureNetwork(ctx, &network.Config{
 		Network:        "default",
 		Enable:         true,
@@ -49,7 +90,7 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 	})
 
 	fmt.Println("Configured Network")
-	
+
 	listen, err := multiaddr.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/3333", netclient.MustGetDataNetworkIP().String()))
 	if err != nil {
 		return err
@@ -64,26 +105,27 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 		return err
 	}
 	for _, a := range h.Addrs() {
-		runenv.RecordMessage("listening on addr: %s", a.String())
+		runenv.RecordMessage("Listening on Addr: %s", a.String())
 	}
 	bstore := blockstore.NewBlockstore(datastore.NewMapDatastore())
 	ex := bitswap.New(ctx, bsnet.NewFromIpfsHost(h, kad), bstore)
-	
-	r := rand.New(rand.NewSource(5))
 
 	switch runenv.TestGroupID {
-	case "early_providers":
-		runenv.RecordMessage("running early_providers")
+	case "early_provider":
+		r := rand.New(rand.NewSource(5))
+		runenv.RecordMessage("Running new early_provider, Random Seed Test: ", r.Uint64())
 		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx, r)
-	case "late_providers":
-		runenv.RecordMessage("running late_providers")
-		err = runLateProvide(ctx, runenv, h, bstore, ex, initCtx)
-	case "requesters":
-		runenv.RecordMessage("running requester")
+	case "late_provider":
+		r := rand.New(rand.NewSource(5))
+		runenv.RecordMessage("Running new late_provider, Random Seed Test: ", r.Uint64())
+		err = runLateProvide(ctx, runenv, h, bstore, ex, initCtx, r)
+	case "requester":
+		r := rand.New(rand.NewSource(5))
+		runenv.RecordMessage("Running new requester, Random Seed Test: ", r.Uint64())
 		err = runRequest(ctx, runenv, h, bstore, ex, initCtx, r)
 	default:
-		runenv.RecordMessage("not part of a group")
-		err = errors.New("unknown test group id")
+		runenv.RecordMessage("Not part of a group: ", runenv.TestGroupID)
+		err = errors.New("Unknown test group id")
 	}
 	return err
 }
