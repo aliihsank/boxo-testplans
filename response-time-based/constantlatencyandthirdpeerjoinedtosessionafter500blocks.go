@@ -61,7 +61,14 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 				Duplicate:     0.02,
 				DuplicateCorr: 0.1,
 			}
-		case 3:
+		default:
+			fmt.Println("There is something wrong with seq number.")
+		}
+	}
+
+	if(runenv.TestGroupID == "late_provider"){
+		switch groupSeq {
+		case 1:
 			linkShape = network.LinkShape{
 				Latency:   10 * time.Millisecond,
 				Jitter:    20 * time.Millisecond,
@@ -114,7 +121,7 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 	case "early_provider":
 		r := rand.New(rand.NewSource(5))
 		runenv.RecordMessage("Running new early_provider, Random Seed Test: ", r.Uint64())
-		err = runEarlyProvide(ctx, runenv, h, bstore, ex, initCtx, r)
+		err = runEarlyProvideForCase2(ctx, runenv, h, bstore, ex, initCtx, r)
 	case "late_provider":
 		r := rand.New(rand.NewSource(5))
 		runenv.RecordMessage("Running new late_provider, Random Seed Test: ", r.Uint64())
@@ -122,7 +129,7 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 	case "requester":
 		r := rand.New(rand.NewSource(5))
 		runenv.RecordMessage("Running new requester, Random Seed Test: ", r.Uint64())
-		err = runRequest(ctx, runenv, h, bstore, ex, initCtx, r)
+		err = runRequestForCase2(ctx, runenv, h, bstore, ex, initCtx, r)
 	default:
 		runenv.RecordMessage("Not part of a group: ", runenv.TestGroupID)
 		err = errors.New("Unknown test group id")

@@ -17,15 +17,17 @@ import (
 func runLateProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore blockstore.Blockstore, ex exchange.Interface, initCtx *run.InitContext, r *rand.Rand) error {
 	client := initCtx.SyncClient
 
+	_ = client.MustSignalAndWait(ctx, phase2BeginState, 2) // Waits for only requester
+
+	size := runenv.SizeParam("size")
+	count := runenv.IntParam("count")
+
 	ai := peer.AddrInfo{
 		ID:    h.ID(),
 		Addrs: h.Addrs(),
 	}
-	client.MustPublish(ctx, providerTopic, &ai)
-	_ = client.MustSignalAndWait(ctx, lateProviderReadyState, runenv.TestInstanceCount)
-
-	size := runenv.SizeParam("size")
-	count := runenv.IntParam("count")
+	client.MustPublish(ctx, lateProviderTopic, &ai)
+	_ = client.MustSignalAndWait(ctx, lateProviderReadyState, 2) // Waits for only requester
 	
 	rootBlock := generateBlocksOfSize(1, size, r)
 	blocks := generateBlocksOfSize(count, size, r)
@@ -41,7 +43,7 @@ func runLateProvide(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bs
 
 	time.Sleep(1 * time.Second)
 
-	_ = client.MustSignalAndWait(ctx, readyDLState, runenv.TestInstanceCount)
-	_ = client.MustSignalAndWait(ctx, doneState, runenv.TestInstanceCount)
+	_ = client.MustSignalAndWait(ctx, readyDLPhase2State, 2) // Waits for only requester
+	_ = client.MustSignalAndWait(ctx, doneState, runenv.TestInstanceCount) // Waits for all peers
 	return nil
 }

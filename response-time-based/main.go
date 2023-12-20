@@ -16,10 +16,13 @@ var (
 	}
 	networkState  = sync.State("network-configured")
 	earlyProviderReadyState    = sync.State("early-provider-ready-to-publish")
+	phase2BeginState    = sync.State("phase-2-begin")
 	lateProviderReadyState    = sync.State("late-provider-ready-to-publish")
 	readyDLState  = sync.State("ready-to-download")
+	readyDLPhase2State = sync.State("ready-to-download-phase-2")
 	doneState     = sync.State("done")
 	providerTopic = sync.NewTopic("provider", &peer.AddrInfo{})
+	lateProviderTopic = sync.NewTopic("late-provider", &peer.AddrInfo{})
 	blockTopic    = sync.NewTopic("blocks", &multihash.Multihash{})
 )
 
