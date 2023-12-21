@@ -38,42 +38,18 @@ func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.
 				Latency:   20 * time.Millisecond,
 				Jitter:    20 * time.Millisecond,
 				Bandwidth: 3e6,
-				// Filter: (not implemented)
-				Loss:          0.02, // Bu değerin farklı variantlarıyla test yapılacak
-				Corrupt:       0.01,
-				CorruptCorr:   0.1,
-				Reorder:       0.01,
-				ReorderCorr:   0.1,
-				Duplicate:     0.02,
-				DuplicateCorr: 0.1,
 			}
 		case 2:
 			linkShape = network.LinkShape{
 				Latency:   60 * time.Millisecond,
 				Jitter:    20 * time.Millisecond,
-				Bandwidth: 3e6,
-				// Filter: (not implemented)
-				Loss:          0.02,
-				Corrupt:       0.01,
-				CorruptCorr:   0.1,
-				Reorder:       0.01,
-				ReorderCorr:   0.1,
-				Duplicate:     0.02,
-				DuplicateCorr: 0.1,
+				Bandwidth: 1e6,
 			}
 		case 3:
 			linkShape = network.LinkShape{
 				Latency:   10 * time.Millisecond,
 				Jitter:    20 * time.Millisecond,
-				Bandwidth: 3e6,
-				// Filter: (not implemented)
-				Loss:          0.02,
-				Corrupt:       0.01,
-				CorruptCorr:   0.1,
-				Reorder:       0.01,
-				ReorderCorr:   0.1,
-				Duplicate:     0.02,
-				DuplicateCorr: 0.1,
+				Bandwidth: 6e6,
 			}
 		default:
 			fmt.Println("There is something wrong with seq number.")
