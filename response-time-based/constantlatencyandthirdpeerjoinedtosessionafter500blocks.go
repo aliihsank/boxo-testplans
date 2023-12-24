@@ -35,15 +35,15 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 		switch groupSeq {
 		case 1:
 			linkShape = network.LinkShape{
-				Latency:   20 * time.Millisecond,
-				Jitter:    20 * time.Millisecond,
-				Bandwidth: 3e6,
+				Latency:   80 * time.Millisecond,
+				Jitter:    0 * time.Millisecond,
+				Bandwidth: 2e7,
 			}
 		case 2:
 			linkShape = network.LinkShape{
-				Latency:   60 * time.Millisecond,
-				Jitter:    20 * time.Millisecond,
-				Bandwidth: 1e6,
+				Latency:   100 * time.Millisecond,
+				Jitter:    0 * time.Millisecond,
+				Bandwidth: 1e7,
 			}
 		default:
 			fmt.Println("There is something wrong with seq number.")
@@ -54,9 +54,9 @@ func runConstantLatencyAndThirdPeerJoinedToSessionAfter500Blocks(runenv *runtime
 		switch groupSeq {
 		case 1:
 			linkShape = network.LinkShape{
-				Latency:   10 * time.Millisecond,
-				Jitter:    20 * time.Millisecond,
-				Bandwidth: 6e6,
+				Latency:   40 * time.Millisecond,
+				Jitter:    0 * time.Millisecond,
+				Bandwidth: 3e7,
 			}
 		default:
 			fmt.Println("There is something wrong with seq number.")

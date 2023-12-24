@@ -73,6 +73,7 @@ func runRequest(ctx context.Context, runenv *runtime.RunEnv, h host.Host, bstore
 
 		dlBegin := time.Now()
 
+		fmt.Println("------------------------------BLOCK ", (i + 1), "------------------------------")
 		blk, err := session.GetBlock(ctx, blockCid)
 		if err != nil {
 			return fmt.Errorf("Could not download/get block %s: %w", mh.String(), err)
@@ -153,10 +154,10 @@ func runRequestForCase2(ctx context.Context, runenv *runtime.RunEnv, h host.Host
 	for i := 0; i < count / 2; i++ {
 		mh := blkmhs[i]
 		blockCid := cid.NewCidV0(mh)
-		runenv.RecordMessage("Initiating block request for %s", blockCid.String())
 
 		dlBegin := time.Now()
 
+		fmt.Println("------------------------------BLOCK ", (i + 1), "------------------------------")
 		blk, err := session.GetBlock(ctx, blockCid)
 		if err != nil {
 			return fmt.Errorf("Could not download/get block %s: %w", mh.String(), err)
@@ -204,6 +205,8 @@ func runRequestForCase2(ctx context.Context, runenv *runtime.RunEnv, h host.Host
 	
 	_ = client.MustSignalAndWait(ctx, readyDLPhase2State, 2) // Wait for 1 late provider to be ready
 
+	time.Sleep(30 * time.Second)
+	
 	begin = time.Now()
 
 	// PHASE 2
@@ -211,10 +214,10 @@ func runRequestForCase2(ctx context.Context, runenv *runtime.RunEnv, h host.Host
 	for i := count / 2; i < count; i++ {
 		mh := blkmhs[i]
 		blockCid := cid.NewCidV0(mh)
-		runenv.RecordMessage("Initiating block request for %s", blockCid.String())
 
 		dlBegin := time.Now()
-
+		
+		fmt.Println("---------------BLOCK ", (i + 1), "---------------")
 		blk, err := session.GetBlock(ctx, blockCid)
 		if err != nil {
 			return fmt.Errorf("Could not download/get block %s: %w", mh.String(), err)

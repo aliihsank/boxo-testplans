@@ -21,8 +21,8 @@ github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuy
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
-github.com/aliihsank/boxo v0.0.0-20231218122037-263f9baa9101 h1:HDjB4RQq7pzbCr1uW9Kcpftf+fD3M5PDmfBvZszXnVo=
-github.com/aliihsank/boxo v0.0.0-20231218122037-263f9baa9101/go.mod h1:jAgpNQn7T7BnibUeReXcKU9Ha1xmYNyOlwVEl193ow0=
+github.com/aliihsank/boxo v0.0.0-20231222105048-447239194284 h1:RG4NwxWuesnNsl1L5mlXiXRPZJIDCDrJ2uIc5lXpLoQ=
+github.com/aliihsank/boxo v0.0.0-20231222105048-447239194284/go.mod h1:jAgpNQn7T7BnibUeReXcKU9Ha1xmYNyOlwVEl193ow0=
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
 github.com/avast/retry-go v2.6.0+incompatible h1:FelcMrm7Bxacr1/RM8+/eqkDkmVN7tjlsy51dOzB3LI=
