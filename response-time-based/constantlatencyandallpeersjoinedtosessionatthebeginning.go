@@ -35,15 +35,21 @@ func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.
 		switch groupSeq {
 		case 1:
 			linkShape = network.LinkShape{
-				Latency:   60 * time.Millisecond,
+				Latency:   80 * time.Millisecond,
 				Jitter:    0 * time.Millisecond,
-				Bandwidth: 1e6,
+				Bandwidth: 2e7,
 			}
 		case 2:
 			linkShape = network.LinkShape{
-				Latency:   10 * time.Millisecond,
+				Latency:   100 * time.Millisecond,
 				Jitter:    0 * time.Millisecond,
-				Bandwidth: 6e6,
+				Bandwidth: 1e7,
+			}
+		case 3:
+			linkShape = network.LinkShape{
+				Latency:   40 * time.Millisecond,
+				Jitter:    0 * time.Millisecond,
+				Bandwidth: 3e7,
 			}
 		default:
 			fmt.Println("There is something wrong with seq number.")

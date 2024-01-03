@@ -10,11 +10,11 @@ name = "response-time-based"
 
 [[testcases]]
         name= "constant-latency_all-peers-joined-to-session-at-the-beginning"
-        instances = { min = 3, max = 100, default = 3 }
+        instances = { min = 4, max = 100, default = 4 }
 
         [testcases.params]
         size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
-        count = { type = "int", desc = "number of transfers", default = "10" }
+        count = { type = "int", desc = "number of transfers", default = "200" }
 
 [[testcases]]
         name= "constant-latency_third-peer-joined-to-session-after-500-blocks"
