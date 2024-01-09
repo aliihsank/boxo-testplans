@@ -14,7 +14,7 @@ name = "response-time-based"
 
         [testcases.params]
         size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
-        count = { type = "int", desc = "number of transfers", default = "200" }
+        count = { type = "int", desc = "number of transfers", default = "400" }
 
 [[testcases]]
         name= "constant-latency_third-peer-joined-to-session-after-500-blocks"
@@ -22,7 +22,7 @@ name = "response-time-based"
 
         [testcases.params]
         size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
-        count = { type = "int", desc = "number of transfers", default = "200" }
+        count = { type = "int", desc = "number of transfers", default = "400" }
 
 [[testcases]]
         name= "variable-latency"

@@ -192,20 +192,18 @@ func runRequestForCase2(ctx context.Context, runenv *runtime.RunEnv, h host.Host
 		return lateErr
 	}
 
-	lateProviderSub.Done()
+	_ = client.MustSignalAndWait(ctx, readyDLPhase2State, 2) // Wait for 1 late provider to be ready
 
+	lateProviderSub.Done()
 	ai := <-lateProviders
 	runenv.RecordMessage("Connecting to late provider: %s", fmt.Sprint(*ai))
-
 	err = h.Connect(ctx, *ai)
 	if err != nil {
 		return fmt.Errorf("Could not connect to provider: %w", err)
 	}
 	runenv.RecordMessage("Requester connected to late provider: %s", fmt.Sprint(*ai))
-	
-	_ = client.MustSignalAndWait(ctx, readyDLPhase2State, 2) // Wait for 1 late provider to be ready
 
-	time.Sleep(30 * time.Second)
+	time.Sleep(20 * time.Second)
 	
 	begin = time.Now()
 
