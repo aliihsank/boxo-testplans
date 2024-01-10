@@ -4,7 +4,7 @@
 [global]
         plan = "response-time-based"
         case = "variable-latency" // 3rd peer's latency increases to 90ms
-        total_instances = 4
+        total_instances = 11
         builder = "docker:go"
         runner = "local:docker"
 

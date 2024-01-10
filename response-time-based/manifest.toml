@@ -10,7 +10,7 @@ name = "response-time-based"
 
 [[testcases]]
         name= "constant-latency_all-peers-joined-to-session-at-the-beginning"
-        instances = { min = 4, max = 100, default = 4 }
+        instances = { min = 11, max = 100, default = 11 }
 
         [testcases.params]
         size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
@@ -18,7 +18,7 @@ name = "response-time-based"
 
 [[testcases]]
         name= "constant-latency_third-peer-joined-to-session-after-500-blocks"
-        instances = { min = 4, max = 100, default = 4 }
+        instances = { min = 11, max = 100, default = 11 }
 
         [testcases.params]
         size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }
@@ -26,7 +26,7 @@ name = "response-time-based"
 
 [[testcases]]
         name= "variable-latency"
-        instances = { min = 4, max = 100, default = 4 }
+        instances = { min = 11, max = 100, default = 11 }
 
         [testcases.params]
         size = { type = "int", desc = "size of file to transfer, in human-friendly form", default = "1MiB" }

@@ -4,7 +4,7 @@
 [global]
         plan = "response-time-based"
         case = "constant-latency_third-peer-joined-to-session-after-500-blocks"
-        total_instances = 4
+        total_instances = 11
         builder = "docker:go"
         runner = "local:docker"
 
@@ -14,7 +14,7 @@
 [global.run.test_params]
         size      = "1MB"
         block_count     = "400"
-	provider_count	= "3"
+	provider_count	= "10"
 
 [[groups]]
         id = "early_provider"

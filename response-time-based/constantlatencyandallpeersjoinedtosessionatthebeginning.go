@@ -34,18 +34,25 @@ func runConstantLatencyAndAllPeersJoinedToSessionAtTheBeginning(runenv *runtime.
 	if(runenv.TestGroupID == "early_provider"){
 		switch groupSeq {
 		case 1:
+		case 2:
+		case 3:
+		case 4:
 			linkShape = network.LinkShape{
 				Latency:   40 * time.Millisecond,
 				Jitter:    0 * time.Millisecond,
 				Bandwidth: 2e7,
 			}
-		case 2:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
 			linkShape = network.LinkShape{
 				Latency:   100 * time.Millisecond,
 				Jitter:    0 * time.Millisecond,
 				Bandwidth: 1e7,
 			}
-		case 3:
+		case 9:
+		case 10:
 			linkShape = network.LinkShape{
 				Latency:   10 * time.Millisecond,
 				Jitter:    0 * time.Millisecond,
